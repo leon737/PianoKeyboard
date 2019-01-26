@@ -54,15 +54,15 @@ connection.start({ jsonp: true })
 .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
 .fail(function(){ console.log('Could not connect'); });
 
-export default {
-    props: {
-        demoKeys: Array
-    },
+export default {   
     data() {
         return {
             keys: keys,
             lockKeys: true
         }
+    },
+    computed: {
+        demoKeys() { return this.$store.state.demoKeys}
     },
     methods: {
         getLeft(index) {
@@ -102,7 +102,7 @@ export default {
             }
         },
         emitKeyChangedEvent() {
-            this.$emit('keysChanged', {keys: this.keys.filter(x => !!x.down)});
+            this.$store.dispatch('changePressedKeys', {keys: this.keys.filter(x => !!x.down)});
         },
         reset() {
              _.each(this.keys, v => {v.down = false});
@@ -119,7 +119,7 @@ export default {
             if (note < 36 || note > 71) return;
             this.keyUp(note - 36);
         })
-    }
+    } 
 }
 </script>
 <style scoped>

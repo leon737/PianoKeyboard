@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div class="keyboard-container">
-      <Keyboard @keysChanged="keysChanged" :demoKeys="demoKeys"/>
+      <Keyboard/>
     </div>
     <div style="position:relative; margin-top:180px">
-      <Keys :notes="notes" @keySelected="keySelected"/>
+      <Keys/>
     </div>
   </div>
 </template>
@@ -18,26 +18,7 @@ export default {
   components: {
     Keyboard,
     Keys
-  },
-  data() {
-    return {
-      notes: [],
-      demoKeys: []
-    }
-  },
-  methods: {
-    keysChanged(e) {
-      this.notes = e.keys.map(v => v.index);
-    },
-    keySelected(e) {
-      if (!!e.key) {
-        this.demoKeys = e.key.notes;
-      }
-      else {
-        this.demoKeys = [];
-      }
-    }
-  }
+  }  
 }
 </script>
 

@@ -18,9 +18,6 @@ import KeyService from '@/services/KeyService'
 const keyService = new KeyService();
 
 export default {
-    props: {
-        notes: Array
-    },
     data () {
         return {
             keys: [],
@@ -31,17 +28,20 @@ export default {
         selectedParallelKey() {
             if (!this.selectedKey) return void(0);
             return _.find(keyService.keys, x => x.containsAllNotes(this.selectedKey.notes) && x != this.selectedKey);
-        }
+        },
+        notes() { return this.$store.state.notes.map(n => n.index) }
     },
     methods: {
+        emitKeySelectedEvent(key) {
+            this.$store.dispatch('changeDemoKeys', {key: key});
+        },
         mouseEnter (key) {
             this.selectedKey = key;
-            this.$emit('keySelected', {key: key});
-            
+            this.emitKeySelectedEvent(key);            
         },
         mouseLeave (key) {
             this.selectedKey = void(0);
-            this.$emit('keySelected', {key: void(0)});            
+            this.emitKeySelectedEvent(void(0));
         },
         getParallelKeyClass(key) {
             return key == this.selectedParallelKey ? 'parallel-key' : '';

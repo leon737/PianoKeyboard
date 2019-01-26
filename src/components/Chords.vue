@@ -1,13 +1,31 @@
 <template>
     <div class="container">
-        <ul>
-            <li v-for="chord in chords" 
-                :key="`${chord.root}:${chord.suffix}:${chord.subSuffix}`" 
-                @mouseenter="mouseEnter(chord)" 
-                @mouseleave="mouseLeave(chord)">
-                {{chord.rootName}}{{chord.suffix}}<span class="sub">{{chord.subSuffix}}</span>
-            </li>
-        </ul>
+        <span>Group by </span>
+        <select v-model="groupBy">
+            <option value="root">Root note</option>
+            <option value="kind">Kind</option>
+        </select>
+        <div class="list">
+            <ul>
+                <li v-for="chord in orderedChords" 
+                    :key="`${chord.root}:${chord.suffix}:${chord.subSuffix}`" >
+                    <div class="chord-line">
+                        <div
+                            @mouseenter="mouseEnter(chord)" 
+                            @mouseleave="mouseLeave(chord)">
+                            {{chord.rootName}}{{chord.suffix}}<span class="sub">{{chord.subSuffix}}</span>
+                        </div>
+                        <div v-for="inversion in chord.inversions" 
+                            :key="inversion.index" 
+                            class="inversion"
+                            @mouseenter="mouseEnter(chord, inversion.index)" 
+                            @mouseleave="mouseLeave(chord)">
+                                {{inversion.index}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -20,19 +38,23 @@ export default {
     data () {
         return {
             chords: [],
-            selectedChord: void(0)        
+            selectedChord: void(0),
+            groupBy: 'root'        
         }
     },
     computed: {        
-        notes() { return this.$store.state.notes.map(n => n.index) }
+        notes() { return this.$store.state.notes.map(n => n.index) },
+         orderedChords() { 
+            return _.orderBy(this.chords, v => this.groupBy == 'root' ? v.root : v.suffix + v.subSuffix);
+        }
     },
     methods: {
-        emitKeySelectedEvent(chord) {
-             this.$store.dispatch('changeChordDemoKeys', {key: chord});
+        emitKeySelectedEvent(chord, inversionIndex) {
+             this.$store.dispatch('changeChordDemoKeys', {chord: chord, inversionIndex: inversionIndex});
         },
-        mouseEnter (chord) {
+        mouseEnter (chord, inversionIndex) {
             this.selectedChord = chord;
-            this.emitKeySelectedEvent(chord);            
+            this.emitKeySelectedEvent(chord, inversionIndex);            
         },
         mouseLeave (chord) {
             this.selectedChord = void(0);
@@ -49,9 +71,13 @@ export default {
 </script>
 <style scoped>
     .container {
-        width: 300px;
-        column-count: 4;
-        column-gap: 50px;
+        width: 350px;        
+    }
+
+    .list {
+        margin-top: 15px;
+        column-count: 2;
+        column-gap: 30px;
     }
 
     ul {
@@ -67,13 +93,28 @@ export default {
         font-weight: bold;
     }
 
-    .parallel-key {
-        color: aqua;
-    }
-
     span.sub {
         vertical-align: sub;
         font-size: 14px;
+    }
+
+    .inversion {
+        background-color: red;
+        border-radius: 50%;
+        font-size: 12px;
+        color: #fff;
+        width: 15px;
+        height: 15px;
+        text-align: center;
+    }
+
+     .inversion:hover {        
+        color: darkred;
+    }
+
+    .chord-line {
+        display: grid;
+        grid-template-columns: 70px 16px 16px 16px 16px 16px;
     }
 </style>
 

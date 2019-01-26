@@ -28,7 +28,7 @@ import EventBus from '@/services/EventBus';
 const connection = $.hubConnection('http://127.0.0.1:8088');
 const proxy = connection.createHubProxy('MyHub');
 
-const octavesCount = 3;
+const octavesCount = 4;
 const keys = _.range(octavesCount * 12).map((__, i) => ({index: i, down: false}));
 
 const isBlackKey = (index) => {
@@ -112,12 +112,12 @@ export default {
     },
     mounted() {
         EventBus.$on('note on', note => {
-            if (note < 36 || note > 71) return;
+            if (note < 36 || note > 83) return;
             this.keys[note - 36].down = true;
             this.emitKeyChangedEvent();
         });
         EventBus.$on('note off', note => {
-            if (note < 36 || note > 71) return;
+            if (note < 36 || note > 83) return;
             this.keyUp(note - 36);
         })
     } 

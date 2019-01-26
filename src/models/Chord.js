@@ -2,6 +2,20 @@ import _ from 'lodash';
 
 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
+const makeInversions = notes => {
+    const result = [];
+    for(let i = 1; i <= notes.length - 1; ++i) {
+        const temp = notes.slice();
+        for (let j = 0; j < i; ++j)
+            temp[j] += 12;
+        result.push({
+            index: i,
+            notes: temp
+        });
+    }
+    return result;
+};
+
 export default class Chord {
     constructor(root, suffix, notes) {
         this.root = root;
@@ -16,6 +30,7 @@ export default class Chord {
             this.subSuffix = '11';
         }        
         this.notes = notes;
+        this.inversions = makeInversions(this.notes);
     }
 
     get rootName () {

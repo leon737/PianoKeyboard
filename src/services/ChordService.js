@@ -43,7 +43,7 @@ const types = [
         notes: [0, 4, 7, 10, 14]
     },
     {
-        suffix: 'maj11',
+        suffix: 'M11',
         notes: [0, 4, 7, 11, 14, 17]
     }
 ];

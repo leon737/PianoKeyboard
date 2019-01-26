@@ -1,7 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container">        
+        <span>Group by </span>
+        <select v-model="groupBy">
+            <option value="root">Root note</option>
+            <option value="kind">Kind</option>
+        </select>
         <ul>
-            <li v-for="key in keys" 
+            <li v-for="key in orderedKeys" 
                 :key="`${key.root}:${key.type}`" 
                 :class="getParallelKeyClass(key)"
                 @mouseenter="mouseEnter(key)" 
@@ -14,6 +19,7 @@
 <script>
 
 import KeyService from '@/services/KeyService'
+import _ from 'lodash';
 
 const keyService = new KeyService();
 
@@ -21,7 +27,8 @@ export default {
     data () {
         return {
             keys: [],
-            selectedKey: void(0)
+            selectedKey: void(0),
+            groupBy: 'kind'
         }
     },
     computed: {
@@ -29,7 +36,10 @@ export default {
             if (!this.selectedKey) return void(0);
             return _.find(keyService.keys, x => x.containsAllNotes(this.selectedKey.notes) && x != this.selectedKey);
         },
-        notes() { return this.$store.state.notes.map(n => n.index) }
+        notes() { return this.$store.state.notes.map(n => n.index) },
+        orderedKeys() { 
+            return _.orderBy(this.keys, v => this.groupBy == 'root' ? v.root : v.type);
+        }
     },
     methods: {
         emitKeySelectedEvent(key) {
@@ -57,7 +67,7 @@ export default {
 </script>
 <style scoped>
     .container {
-        width: 150px;
+        width: 200px;
     }
 
     li {

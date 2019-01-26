@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     notes: [],
-    demoKeys: []
+    demoKeys: [],
+    demoChordMode: false
   },
   mutations: {
     changePressedKeys(state, payload) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
           else {
             state.demoKeys = [];
           }
+    },
+    changeDemoChordMode(state, payload) {
+      state.demoChordMode = payload;
     }
   },
   actions: {
@@ -27,8 +31,12 @@ export default new Vuex.Store({
       },
       changeDemoKeys(context, payload) {
         context.commit('changeDemoKeys', payload);
-    }
-
+        context.commit('changeDemoChordMode', false);
+      },
+      changeChordDemoKeys(context, payload) {
+        context.commit('changeDemoKeys', payload);
+        context.commit('changeDemoChordMode', true);
+      }
   },
   getters: {
     

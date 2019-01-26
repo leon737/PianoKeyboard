@@ -5,7 +5,7 @@ const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', '
 export default class Key {
     constructor(root, type, notes) {
         this.root = root;
-        this.type = type;
+        this.type = type =='major' ? '' : 'm' ;
         this.notes = notes;
     }
 

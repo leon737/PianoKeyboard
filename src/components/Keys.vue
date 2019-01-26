@@ -6,7 +6,7 @@
                 :class="getParallelKeyClass(key)"
                 @mouseenter="mouseEnter(key)" 
                 @mouseleave="mouseLeave(key)">
-                {{key.rootName}} {{key.type}}
+                {{key.rootName}}{{key.type}}
             </li>
         </ul>
     </div>
@@ -55,7 +55,7 @@ export default {
     
 }
 </script>
-<style>
+<style scoped>
     .container {
         width: 150px;
     }

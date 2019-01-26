@@ -62,7 +62,8 @@ export default {
         }
     },
     computed: {
-        demoKeys() { return this.$store.state.demoKeys}
+        demoKeys() { return this.$store.state.demoKeys},
+        demoChordMode() { return this.$store.state.demoChordMode}
     },
     methods: {
         getLeft(index) {
@@ -77,7 +78,7 @@ export default {
         getWhiteOrBlackKeyClass(index)  {
             const baseClass = isBlackKey(index) ? 'black' : 'white';
             const upDownClass = this.keys[index].down ? 'down' : 'up';
-            const demoKeySelected = _.indexOf(this.demoKeys, index % 12) >= 0;
+            const demoKeySelected = _.indexOf(this.demoKeys, this.demoChordMode ? index : index % 12) >= 0;
             return [baseClass, demoKeySelected ? `${baseClass}-demo` : `${baseClass}-${upDownClass}`];
         },
         keyDown(index) {

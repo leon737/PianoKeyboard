@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     notes: [],
     demoKeys: [],
-    demoChordMode: false
+    demoChordMode: false,
+    selectedKey: void(0),
+    selectedChord: void(0)
   },
   mutations: {
     changePressedKeys(state, payload) {
@@ -24,6 +26,16 @@ export default new Vuex.Store({
     },
     changeDemoChordMode(state, payload) {
       state.demoChordMode = payload;
+    },
+    setSelectedKey(state, payload) {
+      if (state.selectedKey == payload)
+        payload = void(0);
+      state.selectedKey = payload;
+    },
+    setSelectedChord(state, payload) {
+      if (state.selectedChord == payload)
+        payload = void(0);
+      state.selectedChord = payload;
     }
   },
   actions: {
@@ -40,6 +52,12 @@ export default new Vuex.Store({
         } : void(0);
         context.commit('changeDemoKeys', payload);
         context.commit('changeDemoChordMode', true);
+      },
+      setSelectedKey(context, payload) {
+        context.commit('setSelectedKey', payload);
+      },
+      setSelectedChord(context, payload) {
+        context.commit('setSelectedChord', payload);
       }
   },
   getters: {

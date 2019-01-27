@@ -8,7 +8,9 @@
         <div class="list">
             <ul>
                 <li v-for="chord in orderedChords" 
-                    :key="`${chord.root}:${chord.suffix}:${chord.subSuffix}`" >
+                    :key="`${chord.root}:${chord.suffix}:${chord.subSuffix}`"
+                    @click="click(chord)"
+                    :class="getChordClass(chord)">
                     <div class="chord-line">
                         <div
                             @mouseenter="mouseEnter(chord)" 
@@ -38,33 +40,52 @@ export default {
     data () {
         return {
             chords: [],
-            selectedChord: void(0),
+            highlightedChord: void(0),
             groupBy: 'root'        
         }
     },
     computed: {        
         notes() { return this.$store.state.notes.map(n => n.index) },
-         orderedChords() { 
+        selectedKey() { return this.$store.state.selectedKey },
+        orderedChords() { 
             return _.orderBy(this.chords, v => this.groupBy == 'root' ? v.root : v.suffix + v.subSuffix);
-        }
+        },
+        selectedChord() { return this.$store.state.selectedChord}
     },
     methods: {
         emitKeySelectedEvent(chord, inversionIndex) {
              this.$store.dispatch('changeChordDemoKeys', {chord: chord, inversionIndex: inversionIndex});
         },
         mouseEnter (chord, inversionIndex) {
-            this.selectedChord = chord;
+            this.highlightedChord = chord;
             this.emitKeySelectedEvent(chord, inversionIndex);            
         },
         mouseLeave (chord) {
-            this.selectedChord = void(0);
+            this.highlightedChord = void(0);
             this.emitKeySelectedEvent(void(0));
+        },
+        click (chord) {
+            this.$store.dispatch('setSelectedChord', chord);
+        },
+        getChordClass (chord) {
+            const selectedChordClass = this.selectedChord == chord ? 'selected-chord' : '';
+            return `${selectedChordClass}`;
+        },
+        updateChords() {
+            this.chords = (() => {
+                const chordsByNotes = chordService.chords.filter(x => x.containsAllNotes(this.notes));
+                if (!this.selectedKey)
+                    return chordsByNotes;                    
+                const chordsBySelectedKey = chordService.chords.filter(x => this.selectedKey.containsAllNotes(x.notes));
+                if (!this.notes || !this.notes.length)
+                    return chordsBySelectedKey;   
+                return _.intersection(chordsByNotes, chordsBySelectedKey);
+            })();     
         }
     },
     watch: {
-        notes (newValue, oldValue) {
-            this.chords = chordService.chords.filter(x => x.containsAllNotes(newValue));
-        }
+        notes () { this.updateChords() },
+        selectedKey () { this.updateChords() }
     }
     
 }
@@ -115,6 +136,20 @@ export default {
     .chord-line {
         display: grid;
         grid-template-columns: 70px 16px 16px 16px 16px 16px;
+    }
+
+    .selected-chord {
+        font-size: 24px;
+    }
+
+    .selected-chord .inversion {
+        font-size:16px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .selected-chord .chord-line {
+        grid-template-columns: 70px 21px 21px 21px 21px 21px;
     }
 </style>
 

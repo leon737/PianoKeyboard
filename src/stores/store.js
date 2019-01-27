@@ -36,6 +36,10 @@ export default new Vuex.Store({
       if (state.selectedChord == payload)
         payload = void(0);
       state.selectedChord = payload;
+    },
+    reset(state) {
+      state.selectedChord = void(0);
+      state.selectedKey = void(0);
     }
   },
   actions: {
@@ -58,6 +62,9 @@ export default new Vuex.Store({
       },
       setSelectedChord(context, payload) {
         context.commit('setSelectedChord', payload);
+      },
+      reset(context) {
+        context.commit('reset');
       }
   },
   getters: {

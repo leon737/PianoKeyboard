@@ -28,14 +28,14 @@ export default {
     data () {
         return {
             keys: [],
-            highligtedKey: void(0),
+            highlightedKey: void(0),
             groupBy: 'kind'
         }
     },
     computed: {
         selectedParallelKey() {
-            if (!this.highligtedKey) return void(0);
-            return _.find(keyService.keys, x => x.containsAllNotes(this.highligtedKey.notes) && x != this.highligtedKey);
+            if (!this.highlightedKey) return void(0);
+            return _.find(keyService.keys, x => x.containsAllNotes(this.highlightedKey.notes) && x != this.highlightedKey);
         },
         notes() { return this.$store.state.notes.map(n => n.index) },
         orderedKeys() { 
@@ -49,11 +49,11 @@ export default {
             this.$store.dispatch('changeDemoKeys', {key: key});
         },
         mouseEnter (key) {
-            this.highligtedKey = key;
+            this.highlightedKey = key;
             this.emitKeySelectedEvent(key);            
         },
         mouseLeave (key) {
-            this.highligtedKey = void(0);
+            this.highlightedKey = void(0);
             this.emitKeySelectedEvent(void(0));
         },
         click (key) {

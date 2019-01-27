@@ -4,7 +4,7 @@
             <input type="checkbox" v-model="lockKeys" @change="lockKeysChanged" />Lock keys
             <input type="button" @click="reset" value="Reset" />
         </div>
-        <div style="position:relative">
+        <div class="piano-keyboard">
             <div v-for="key in keys" 
                 :key="key.index" class="key" 
                 :style="{left:`${getLeft(key.index)}px`}" 
@@ -108,6 +108,7 @@ export default {
         reset() {
              _.each(this.keys, v => {v.down = false});
                 this.emitKeyChangedEvent();
+            this.$store.dispatch('reset');
         }
     },
     mounted() {
@@ -124,38 +125,51 @@ export default {
 }
 </script>
 <style scoped>
+    .piano-keyboard {
+        position: relative;
+        margin-top: 10px;
+    }
+
     .key {
         position: absolute;
         top: 0;
         cursor: pointer;
     }
+
     .white {
         width: 50px;
         height: 150px;
         border: solid 1px #000;
         z-index: 0;
     }
+
     .black {
         width: 26px;
         height: 100px;
         z-index: 1;
         margin-left: -13px;
     }
+
     .white-up {
         background-color: #fff;
     }
+    
     .black-up {
         background-color: #000;
     }
+
     .white-down {
         background-color: #aaa;
     }
+
     .black-down {
         background-color: #666;
     }
+
     .white-demo {
         background-color: lightgreen;
     }
+
     .black-demo {
         background-color: darkgreen;
     }

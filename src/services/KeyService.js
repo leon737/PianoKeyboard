@@ -29,5 +29,15 @@ export default class KeyService {
                 root: v,
                 type: 'minor'
             })));
-    }    
+    } 
+    
+    getKeys(notes, selectedChord) {
+        const keysByNotes = this.keys.filter(x => x.containsAllNotes(notes));
+        if (!selectedChord)
+            return keysByNotes;              
+        const keysBySelectedChord = this.keys.filter(x => x.containsAllNotes(selectedChord.notes));
+        if (!notes || !notes.length)
+            return keysBySelectedChord;  
+        return _.intersection(keysByNotes, keysBySelectedChord);
+    }
 }

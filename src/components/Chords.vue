@@ -32,21 +32,15 @@
 </template>
 <script>
 
-import ChordService from '@/services/ChordService'
-
-const chordService = new ChordService();
-
 export default {
     data () {
         return {
-            chords: [],
             highlightedChord: void(0),
             groupBy: 'root'        
         }
     },
     computed: {        
-        notes() { return this.$store.state.notes.map(n => n.index) },
-        selectedKey() { return this.$store.state.selectedKey },
+        chords() { return this.$store.getters.chords},
         orderedChords() { 
             return _.orderBy(this.chords, v => this.groupBy == 'root' ? v.root : v.suffix + v.subSuffix);
         },
@@ -70,24 +64,9 @@ export default {
         getChordClass (chord) {
             const selectedChordClass = this.selectedChord == chord ? 'selected-chord' : '';
             return `${selectedChordClass}`;
-        },
-        updateChords() {
-            this.chords = (() => {
-                const chordsByNotes = chordService.chords.filter(x => x.containsAllNotes(this.notes));
-                if (!this.selectedKey)
-                    return chordsByNotes;                    
-                const chordsBySelectedKey = chordService.chords.filter(x => this.selectedKey.containsAllNotes(x.notes));
-                if (!this.notes || !this.notes.length)
-                    return chordsBySelectedKey;   
-                return _.intersection(chordsByNotes, chordsBySelectedKey);
-            })();     
         }
-    },
-    watch: {
-        notes () { this.updateChords() },
-        selectedKey () { this.updateChords() }
-    }
-    
+        
+    }    
 }
 </script>
 <style scoped>

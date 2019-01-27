@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash';
+import ChordService from '@/services/ChordService';
+import KeyService from '@/services/KeyService';
 
 Vue.use(Vuex)
+
+const chordService = new ChordService();
+const keyService = new KeyService();
 
 export default new Vuex.Store({
   state: {
@@ -68,6 +73,14 @@ export default new Vuex.Store({
       }
   },
   getters: {
-    
+    chords(state) {
+      return chordService.getChords(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedKey);
+    },
+    keys(state) {
+      return keyService.getKeys(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedChord);
+    },
+    allKeys(state) {
+      return keyService.keys;
+    }
   }
 })

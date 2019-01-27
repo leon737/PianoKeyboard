@@ -19,23 +19,20 @@
 </template>
 <script>
 
-import KeyService from '@/services/KeyService'
 import _ from 'lodash';
-
-const keyService = new KeyService();
 
 export default {
     data () {
-        return {
-            keys: [],
+        return {            
             highlightedKey: void(0),
             groupBy: 'kind'
         }
     },
     computed: {
+        keys() { return this.$store.getters.keys },
         selectedParallelKey() {
             if (!this.highlightedKey) return void(0);
-            return _.find(keyService.keys, x => x.containsAllNotes(this.highlightedKey.notes) && x != this.highlightedKey);
+            return _.find(this.$store.getters.allKeys, x => x.containsAllNotes(this.highlightedKey.notes) && x != this.highlightedKey);
         },
         notes() { return this.$store.state.notes.map(n => n.index) },
         orderedKeys() { 
@@ -63,24 +60,9 @@ export default {
             const selectedKeyClass = key == this.selectedKey ? 'selected-key' : '';
             const parallelKeyClass = key == this.selectedParallelKey ? 'parallel-key' : '';
             return `${selectedKeyClass} ${parallelKeyClass}`;
-        },
-        updateKeys() {
-            this.keys = (() => {
-                const keysByNotes = keyService.keys.filter(x => x.containsAllNotes(this.notes));
-                if (!this.selectedChord)
-                    return keysByNotes;              
-                const keysBySelectedChord = keyService.keys.filter(x => x.containsAllNotes(this.selectedChord.notes));
-                if (!this.notes || !this.notes.length)
-                    return keysBySelectedChord;  
-                return _.intersection(keysByNotes, keysBySelectedChord);
-            })();
         }
-    },
-    watch: {
-        notes () { this.updateKeys() },
-        selectedChord() { this.updateKeys() }
+        
     }
-    
 }
 </script>
 <style scoped>

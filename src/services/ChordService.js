@@ -61,5 +61,15 @@ export default class ChordService {
                     type: t
                 }))
             )); 
-    }    
+    } 
+    
+    getChords(notes, selectedKey) {   
+        const chordsByNotes = this.chords.filter(x => x.containsAllNotes(notes));
+        if (!selectedKey)
+            return chordsByNotes;                    
+        const chordsBySelectedKey = this.chords.filter(x => selectedKey.containsAllNotes(x.notes));
+        if (!notes || !notes.length)
+            return chordsBySelectedKey;   
+        return _.intersection(chordsByNotes, chordsBySelectedKey);
+    }
 }

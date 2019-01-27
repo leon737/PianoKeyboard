@@ -11,6 +11,7 @@
                 :class="getWhiteOrBlackKeyClass(key.index)"
                 @mousedown="keyDown(key.index)"
                 @mouseup="keyUp(key.index)">
+                    <div class="note-name">{{getNoteName(key.index)}}</div>
             </div>
         </div>
     </div>
@@ -63,6 +64,7 @@ export default {
     },
     computed: {
         demoKeys() { return this.$store.state.demoKeys},
+        demoKey() { return this.$store.state.demoKey},
         demoChordMode() { return this.$store.state.demoChordMode}
     },
     methods: {
@@ -109,6 +111,14 @@ export default {
              _.each(this.keys, v => {v.down = false});
                 this.emitKeyChangedEvent();
             this.$store.dispatch('reset');
+        },
+        getNoteName(index) {
+            if (!this.demoKey || !this.demoKey.getNoteName) return '';
+            index = index % 12;
+            if (_.some(this.demoKey.notes, x => x == index)) {               
+               return this.demoKey.getNodeNameByLinearIndex(index);
+            }
+            return ''
         }
     },
     mounted() {
@@ -172,6 +182,20 @@ export default {
 
     .black-demo {
         background-color: darkgreen;
+    }
+
+    .white .note-name {
+        padding: 120px 0 0 0;
+        color: #000;
+        width: 100%;
+        text-align: center;
+    }
+
+    .black .note-name {
+        padding: 70px 0 0 0;
+        color: #fff;
+        width: 100%;
+        text-align: center;
     }
 </style>
 

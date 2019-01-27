@@ -15,7 +15,7 @@
                         <div
                             @mouseenter="mouseEnter(chord)" 
                             @mouseleave="mouseLeave(chord)">
-                            {{chord.rootName}}{{chord.suffix}}<span class="sub">{{chord.subSuffix}}</span>
+                            {{getChordRootName(chord)}}{{chord.suffix}}<span class="sub">{{chord.subSuffix}}</span>
                         </div>
                         <div v-for="inversion in chord.inversions" 
                             :key="inversion.index" 
@@ -44,7 +44,8 @@ export default {
         orderedChords() { 
             return _.orderBy(this.chords, v => this.groupBy == 'root' ? v.root : v.suffix + v.subSuffix);
         },
-        selectedChord() { return this.$store.state.selectedChord}
+        selectedChord() { return this.$store.state.selectedChord },
+        selectedKey() { return this.$store.state.selectedKey }
     },
     methods: {
         emitKeySelectedEvent(chord, inversionIndex) {
@@ -64,8 +65,12 @@ export default {
         getChordClass (chord) {
             const selectedChordClass = this.selectedChord == chord ? 'selected-chord' : '';
             return `${selectedChordClass}`;
-        }
-        
+        },
+        getChordRootName (chord) {
+            if (!this.selectedKey)
+                return chord.rootName;
+            return chord.getRootName(this.selectedKey);
+        }        
     }    
 }
 </script>

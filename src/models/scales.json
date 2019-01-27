@@ -1,0 +1,72 @@
+[
+    {
+        "root": "C",
+        "sign": "sharp",
+        "signCount": 0
+    },
+    {
+        "root": "G",
+        "sign": "sharp",
+        "signCount": 1
+    },
+    {
+        "root": "D",
+        "sign": "sharp",
+        "signCount": 2
+    },
+    {
+        "root": "A",
+        "sign": "sharp",
+        "signCount": 3
+    },
+    {
+        "root": "E",
+        "sign": "sharp",
+        "signCount": 4
+    },
+    {
+        "root": "B",
+        "sign": "sharp",
+        "signCount": 5
+    },
+    {
+        "root": "F#",
+        "sign": "sharp",
+        "signCount": 6
+    },    
+    {
+        "root": "F",
+        "sign": "flat",
+        "signCount": 1
+    },
+    {
+        "root": "A#",
+        "sign": "flat",
+        "signCount": 2
+    },
+    {
+        "root": "D#",
+        "sign": "flat",
+        "signCount": 3
+    },
+    {
+        "root": "G#",
+        "sign": "flat",
+        "signCount": 4
+    },
+    {
+        "root": "C#",
+        "sign": "flat",
+        "signCount": 5
+    },
+    {
+        "root": "F#",
+        "sign": "flat",
+        "signCount": 6
+    },
+    {
+        "root": "B#",
+        "sign": "flat",
+        "signCount": 7
+    }
+]

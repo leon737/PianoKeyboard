@@ -12,7 +12,10 @@
                 @mouseenter="mouseEnter(key)" 
                 @mouseleave="mouseLeave(key)"
                 @click="click(key)">
-                {{key.rootName}}{{key.type}}
+                {{key.rootName}}{{key.type}}                     
+                <span v-if="key.definition.signCount > 0 && highlightedKey == key">
+                    {{key.definition.signCount}}{{key.definition.sign == 'sharp' ? '♯' : '♭'}}
+                </span>
             </li>
         </ul>
     </div>

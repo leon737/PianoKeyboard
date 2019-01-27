@@ -15,7 +15,8 @@ export default new Vuex.Store({
     demoKeys: [],
     demoChordMode: false,
     selectedKey: void(0),
-    selectedChord: void(0)
+    selectedChord: void(0),
+    demoKey: void(0)
   },
   mutations: {
     changePressedKeys(state, payload) {
@@ -24,9 +25,11 @@ export default new Vuex.Store({
     changeDemoKeys(state, payload) {
         if (!!payload.key) {
             state.demoKeys = payload.key.notes;
+            state.demoKey = payload.key;
           }
           else {
             state.demoKeys = [];
+            state.demoKey = void(0);
           }
     },
     changeDemoChordMode(state, payload) {

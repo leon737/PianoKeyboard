@@ -34,7 +34,14 @@ export default class Chord {
     }
 
     get rootName () {
-        return noteNames[this.root];
+        let noteName = noteNames[this.root];
+        if (noteName.endsWith('#'))
+            noteName = noteName[0] + '♯';
+        return noteName;
+    }
+
+    getRootName(key) {
+        return key.getNodeNameByLinearIndex(this.root);
     }
 
     containsAllNotes(notes) {

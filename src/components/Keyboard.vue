@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>
-            <input type="checkbox" v-model="lockKeys" @change="lockKeysChanged" />Lock keys
-            <input type="button" @click="reset" value="Reset" />
+            <el-checkbox v-model="lockKeys" @change="lockKeysChanged">Lock keys</el-checkbox>
+            <el-button @click="reset" icon="el-icon-close"> Reset</el-button>
         </div>
         <div class="piano-keyboard">
             <div v-for="key in keys" 

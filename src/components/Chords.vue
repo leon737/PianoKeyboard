@@ -1,10 +1,16 @@
 <template>
     <div class="container">
-        <span>Group by </span>
-        <select v-model="groupBy">
-            <option value="root">Root note</option>
-            <option value="kind">Kind</option>
-        </select>
+       <el-row>     
+            <el-col :span="4">
+                <div class="label">Group by</div>
+            </el-col>
+            <el-col :span="10">
+                <el-select v-model="groupBy">
+                    <el-option value="root" label="Root note"></el-option>
+                    <el-option value="kind" label="Kind"></el-option>
+                </el-select>
+            </el-col>
+        </el-row>
         <div class="list">
             <ul>
                 <li v-for="chord in orderedChords" 
@@ -75,11 +81,7 @@ export default {
 }
 </script>
 <style scoped>
-    .container {
-        width: 350px;        
-    }
-
-    .list {
+   .list {
         margin-top: 15px;
         column-count: 2;
         column-gap: 30px;
@@ -135,6 +137,11 @@ export default {
     .selected-chord .chord-line {
         grid-template-columns: 70px 21px 21px 21px 21px 21px;
     }
+
+    .label {
+        line-height: 40px;        
+    }
+
 </style>
 
 

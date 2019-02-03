@@ -1,23 +1,31 @@
 <template>
-    <div class="container">        
-        <span>Group by </span>
-        <select v-model="groupBy">
-            <option value="root">Root note</option>
-            <option value="kind">Kind</option>
-        </select>
-        <ul>
-            <li v-for="key in orderedKeys" 
-                :key="`${key.root}:${key.type}`" 
-                :class="getKeyClass(key)"
-                @mouseenter="mouseEnter(key)" 
-                @mouseleave="mouseLeave(key)"
-                @click="click(key)">
-                {{key.rootName}}{{key.type}}                     
-                <span v-if="key.definition.signCount > 0 && highlightedKey == key">
-                    {{key.definition.signCount}}{{key.definition.sign == 'sharp' ? '♯' : '♭'}}
-                </span>
-            </li>
-        </ul>
+    <div class="container">   
+        <el-row>     
+            <el-col :span="4">
+                <div class="label">Group by</div>
+            </el-col>
+            <el-col :span="10">
+                <el-select v-model="groupBy">
+                    <el-option value="root" label="Root note"></el-option>
+                    <el-option value="kind" label="Kind"></el-option>
+                </el-select>
+            </el-col>
+        </el-row>
+        <div>
+            <ul>
+                <li v-for="key in orderedKeys" 
+                    :key="`${key.root}:${key.type}`" 
+                    :class="getKeyClass(key)"
+                    @mouseenter="mouseEnter(key)" 
+                    @mouseleave="mouseLeave(key)"
+                    @click="click(key)">
+                    {{key.rootName}}{{key.type}}                     
+                    <span v-if="key.definition.signCount > 0 && highlightedKey == key">
+                        {{key.definition.signCount}}{{key.definition.sign == 'sharp' ? '♯' : '♭'}}
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -68,10 +76,7 @@ export default {
     }
 }
 </script>
-<style scoped>
-    .container {
-        width: 200px;
-    }
+<style scoped>    
 
     li {
         cursor: pointer;
@@ -88,6 +93,11 @@ export default {
 
     .selected-key {
         font-size: 24px;
+    }
+
+    .label {
+        line-height: 40px;
+        
     }
 
 </style>

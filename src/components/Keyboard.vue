@@ -19,18 +19,16 @@
 
 <script>
 
-import _ from 'lodash';
-
+import {range, each, some, indexOf} from 'lodash';
 import $ from 'expose-loader?jQuery!jquery';
 import 'ms-signalr-client';
-
 import EventBus from '@/services/EventBus';
 
 const connection = $.hubConnection('http://127.0.0.1:8088');
 const proxy = connection.createHubProxy('MyHub');
 
 const octavesCount = 4;
-const keys = _.range(octavesCount * 12).map((__, i) => ({index: i, down: false}));
+const keys = range(octavesCount * 12).map((__, i) => ({index: i, down: false}));
 
 const isBlackKey = (index) => {
     const indexInsideOctave = index % 12;
@@ -80,7 +78,7 @@ export default {
         getWhiteOrBlackKeyClass(index)  {
             const baseClass = isBlackKey(index) ? 'black' : 'white';
             const upDownClass = this.keys[index].down ? 'down' : 'up';
-            const demoKeySelected = _.indexOf(this.demoKeys, this.demoChordMode ? index : index % 12) >= 0;
+            const demoKeySelected = indexOf(this.demoKeys, this.demoChordMode ? index : index % 12) >= 0;
             return [baseClass, demoKeySelected ? `${baseClass}-demo` : `${baseClass}-${upDownClass}`];
         },
         keyDown(index) {
@@ -100,7 +98,7 @@ export default {
         },
         lockKeysChanged(e) {
             if (!this.lockKeys) {
-                _.each(this.keys, v => {v.down = false});
+                each(this.keys, v => {v.down = false});
                 this.emitKeyChangedEvent();
             }
         },
@@ -108,14 +106,14 @@ export default {
             this.$store.dispatch('changePressedKeys', {keys: this.keys.filter(x => !!x.down)});
         },
         reset() {
-             _.each(this.keys, v => {v.down = false});
+             each(this.keys, v => {v.down = false});
                 this.emitKeyChangedEvent();
             this.$store.dispatch('reset');
         },
         getNoteName(index) {
             if (!this.demoKey || !this.demoKey.getNoteName) return '';
             index = index % 12;
-            if (_.some(this.demoKey.notes, x => x == index)) {               
+            if (some(this.demoKey.notes, x => x == index)) {               
                return this.demoKey.getNodeNameByLinearIndex(index);
             }
             return ''

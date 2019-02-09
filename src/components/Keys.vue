@@ -1,16 +1,6 @@
 <template>
     <div class="container">   
-        <el-row>     
-            <el-col :span="4">
-                <div class="label">Group by</div>
-            </el-col>
-            <el-col :span="10">
-                <el-select v-model="groupBy">
-                    <el-option value="root" label="Root note"></el-option>
-                    <el-option value="kind" label="Kind"></el-option>
-                </el-select>
-            </el-col>
-        </el-row>
+        <group-selector v-model="groupBy" />
         <div>
             <ul>
                 <li v-for="key in orderedKeys" 
@@ -30,9 +20,11 @@
 </template>
 <script>
 
-import _ from 'lodash';
+import {find, orderBy} from 'lodash';
+import GroupSelector from '@/components/GroupSelector'
 
 export default {
+    components: { GroupSelector },
     data () {
         return {            
             highlightedKey: void(0),
@@ -43,18 +35,18 @@ export default {
         keys() { return this.$store.getters.keys },
         selectedParallelKey() {
             if (!this.highlightedKey) return void(0);
-            return _.find(this.$store.getters.allKeys, x => x.containsAllNotes(this.highlightedKey.notes) && x != this.highlightedKey);
+            return find(this.$store.getters.allKeys, x => x.containsAllNotes(this.highlightedKey.notes) && x != this.highlightedKey);
         },
         notes() { return this.$store.state.notes.map(n => n.index) },
         orderedKeys() { 
-            return _.orderBy(this.keys, v => this.groupBy == 'root' ? v.root : v.type);
+            return orderBy(this.keys, v => this.groupBy == 'root' ? v.root : v.type);
         },
         selectedKey() { return this.$store.state.selectedKey },
         selectedChord() { return this.$store.state.selectedChord }
     },
     methods: {
         emitKeySelectedEvent(key) {
-            this.$store.dispatch('changeDemoKeys', {key: key});
+            this.$store.dispatch('changeDemoKeys', { key });
         },
         mouseEnter (key) {
             this.highlightedKey = key;
@@ -93,12 +85,7 @@ export default {
 
     .selected-key {
         font-size: 24px;
-    }
-
-    .label {
-        line-height: 40px;
-        
-    }
+    }    
 
 </style>
 

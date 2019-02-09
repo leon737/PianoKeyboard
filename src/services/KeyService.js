@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import {range, intersection} from 'lodash'
 import Key from '@/models/Key';
 
 const makeSeq = steps => {
@@ -21,12 +21,12 @@ const makeKey = p => {
 export default class KeyService {
     constructor() {
         this.keys = 
-            _.range(12).map(v => makeKey({
-                root: v,
+            range(12).map(root => makeKey({
+                root,
                 type: 'major'
             }))
-            .concat(_.range(12).map(v => makeKey({
-                root: v,
+            .concat(range(12).map(root => makeKey({
+                root,
                 type: 'minor'
             })));
     } 
@@ -38,6 +38,6 @@ export default class KeyService {
         const keysBySelectedChord = this.keys.filter(x => x.containsAllNotes(selectedChord.notes));
         if (!notes || !notes.length)
             return keysBySelectedChord;  
-        return _.intersection(keysByNotes, keysBySelectedChord);
+        return intersection(keysByNotes, keysBySelectedChord);
     }
 }

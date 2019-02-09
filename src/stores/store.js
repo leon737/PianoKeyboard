@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import _ from 'lodash';
+import {find} from 'lodash';
 import ChordService from '@/services/ChordService';
 import KeyService from '@/services/KeyService';
 
@@ -60,7 +60,7 @@ export default new Vuex.Store({
       },
       changeChordDemoKeys(context, payload) {
         payload.key = !!payload.chord ? {          
-          notes: !!payload.inversionIndex ? _.find(payload.chord.inversions, x => x.index == payload.inversionIndex).notes : payload.chord.notes
+          notes: !!payload.inversionIndex ? find(payload.chord.inversions, x => x.index == payload.inversionIndex).notes : payload.chord.notes
         } : void(0);
         context.commit('changeDemoKeys', payload);
         context.commit('changeDemoChordMode', true);
@@ -82,7 +82,7 @@ export default new Vuex.Store({
     keys(state) {
       return keyService.getKeys(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedChord);
     },
-    allKeys(state) {
+    allKeys() {
       return keyService.keys;
     }
   }

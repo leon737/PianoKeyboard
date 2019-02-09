@@ -1,8 +1,6 @@
-import _ from 'lodash';
-
-import scales from './scales.json'
-
-const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C'];
+import {find, findIndex, indexOf, every} from 'lodash';
+import scales from './scales'
+import noteNames from '@/models/noteNames'
 
 const getParallelKey = (root, type) => {    
     let index = root;
@@ -16,7 +14,7 @@ const getParallelKey = (root, type) => {
 
 const getScaleDefinition = (root, type) => {
     const tRoot = type == 'major' ? noteNames[root] : getParallelKey(root, type);
-    const definition = _.find(scales, x => x.root == tRoot);
+    const definition = find(scales, x => x.root == tRoot);
     return definition;
 };
 
@@ -51,15 +49,15 @@ export default class Key {
     }
 
     getNodeNameByLinearIndex(index) {
-        const targetIndex = _.findIndex(this.notes, x => x == index);
+        const targetIndex = findIndex(this.notes, x => x == index);
         if (targetIndex >= 0) return this.getNoteName(targetIndex);
         return '';
     }
 
 
     containsAllNotes(notes) {
-        return _.every(notes, x => {
-            return _.indexOf(this.notes, x % 12) >= 0}
+        return every(notes, x => {
+            return indexOf(this.notes, x % 12) >= 0}
             );
     }
 

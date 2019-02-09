@@ -1,6 +1,5 @@
-import _ from 'lodash';
-
-const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+import {endsWith, every, indexOf} from 'lodash';
+import noteNames from '@/models/noteNames'
 
 const makeInversions = notes => {
     const result = [];
@@ -21,11 +20,11 @@ export default class Chord {
         this.root = root;
         this.suffix = suffix;
         this.subSuffix = '';
-        if (_.endsWith(this.suffix, '2') || _.endsWith(this.suffix, '4') || _.endsWith(this.suffix, '7') || _.endsWith(suffix, '9')) {
+        if (endsWith(this.suffix, '2') || endsWith(this.suffix, '4') || endsWith(this.suffix, '7') || endsWith(suffix, '9')) {
             this.suffix = this.suffix.substring(0, this.suffix.length - 1);
             this.subSuffix = suffix[suffix.length -1];
         }
-        if (_.endsWith(this.suffix, '11')) {
+        if (endsWith(this.suffix, '11')) {
             this.suffix = this.suffix.substring(0, this.suffix.length - 2);
             this.subSuffix = '11';
         }        
@@ -45,8 +44,8 @@ export default class Chord {
     }
 
     containsAllNotes(notes) {
-        return _.every(notes, x => {
-            return _.indexOf(this.notes.map(z => z % 12), x % 12) >= 0}
+        return every(notes, x => {
+            return indexOf(this.notes.map(z => z % 12), x % 12) >= 0}
             );
     }
 

@@ -1,16 +1,6 @@
 <template>
     <div class="container">
-       <el-row>     
-            <el-col :span="4">
-                <div class="label">Group by</div>
-            </el-col>
-            <el-col :span="10">
-                <el-select v-model="groupBy">
-                    <el-option value="root" label="Root note"></el-option>
-                    <el-option value="kind" label="Kind"></el-option>
-                </el-select>
-            </el-col>
-        </el-row>
+       <group-selector v-model="groupBy" />
         <div class="list">
             <ul>
                 <li v-for="chord in orderedChords" 
@@ -37,8 +27,10 @@
     </div>
 </template>
 <script>
+import GroupSelector from '@/components/GroupSelector'
 
 export default {
+    components: { GroupSelector },
     data () {
         return {
             highlightedChord: void(0),
@@ -55,7 +47,7 @@ export default {
     },
     methods: {
         emitKeySelectedEvent(chord, inversionIndex) {
-             this.$store.dispatch('changeChordDemoKeys', {chord: chord, inversionIndex: inversionIndex});
+             this.$store.dispatch('changeChordDemoKeys', { chord, inversionIndex });
         },
         mouseEnter (chord, inversionIndex) {
             this.highlightedChord = chord;
@@ -137,11 +129,6 @@ export default {
     .selected-chord .chord-line {
         grid-template-columns: 70px 21px 21px 21px 21px 21px;
     }
-
-    .label {
-        line-height: 40px;        
-    }
-
 </style>
 
 

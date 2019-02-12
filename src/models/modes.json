@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Ionian",
+        "shortName": "",
+        "intervals": [0, 2, 2, 1, 2, 2, 2, 1]
+    },
+    {
+        "name": "Aeolian",
+        "shortName": "m",
+        "intervals": [0, 2, 1, 2, 2, 1, 2, 2]
+    },
+    {
+        "name": "Dorian",
+        "shortName": " dorian minor",
+        "intervals": [0, 2, 1, 2, 2, 2, 1, 2]
+    },
+    {
+        "name": "Phrygian",
+        "shortName": " phrygian minor",
+        "intervals": [0, 1, 2, 2, 2, 1, 2, 2]
+    },
+    {
+        "name": "Lydian",
+        "shortName": " lydian major",
+        "intervals": [0, 2, 2, 2, 1, 2, 2, 1]
+    },
+    {
+        "name": "Mixolydian",
+        "shortName": " mixolydian major",
+        "intervals": [0, 2, 2, 1, 2, 2, 1, 2]
+    },
+    {
+        "name": "Locrian",
+        "shortName": "locrian",
+        "intervals": [0, 1, 2, 2, 1, 2, 2, 2]
+    }
+]

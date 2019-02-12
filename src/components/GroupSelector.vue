@@ -20,7 +20,8 @@ export default {
 <style scoped>
     .label {
         line-height: 40px;        
-    }
+        font-size: 14px;
+    }    
 </style>
 
 

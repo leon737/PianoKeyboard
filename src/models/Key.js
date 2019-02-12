@@ -2,9 +2,20 @@ import {find, findIndex, indexOf, every} from 'lodash';
 import scales from './scales'
 import noteNames from '@/models/noteNames'
 
-const getParallelKey = (root, type) => {    
+const ionianMode = 'Ionian';
+
+const makeSeq = steps => {
+    return steps.map((v, i) => {
+        let r = 0;
+        for (let j = 0; j <= i; ++j)
+            r += steps[j];
+        return r;
+    });
+};
+
+const getParallelKey = (root, mode) => {    
     let index = root;
-    if (type == 'major') 
+    if (mode == ionianMode) 
         index += 6;
     else 
         index += 3;
@@ -12,18 +23,20 @@ const getParallelKey = (root, type) => {
     return noteNames[index];
 };
 
-const getScaleDefinition = (root, type) => {
-    const tRoot = type == 'major' ? noteNames[root] : getParallelKey(root, type);
+const getScaleDefinition = (root, mode) => {
+    const tRoot = mode.Name == ionianMode ? noteNames[root] : getParallelKey(root, mode);
     const definition = find(scales, x => x.root == tRoot);
     return definition;
 };
 
 export default class Key {
-    constructor(root, type, notes) {
+    constructor(root, mode) {
         this.root = root;
-        this.definition = getScaleDefinition(root, type);
-        this.type = type =='major' ? '' : 'm' ;
-        this.notes = notes;        
+        this.definition = getScaleDefinition(root, mode);
+        this.type = mode.shortName;
+        const scale = makeSeq(mode.intervals);
+        this.notes = scale.map(v => (root + v) % 12);
+        this.modeName = mode.name;
     }
 
     get rootName () {

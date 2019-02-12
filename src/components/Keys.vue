@@ -1,5 +1,6 @@
 <template>
     <div class="container">   
+        <mode-selector class="margin-after" v-model="modes"/>
         <group-selector v-model="groupBy" />
         <div>
             <ul>
@@ -22,9 +23,10 @@
 
 import {find, orderBy} from 'lodash';
 import GroupSelector from '@/components/GroupSelector'
+import ModeSelector from '@/components/ModeSelector'
 
 export default {
-    components: { GroupSelector },
+    components: { GroupSelector, ModeSelector },
     data () {
         return {            
             highlightedKey: void(0),
@@ -42,7 +44,11 @@ export default {
             return orderBy(this.keys, v => this.groupBy == 'root' ? v.root : v.type);
         },
         selectedKey() { return this.$store.state.selectedKey },
-        selectedChord() { return this.$store.state.selectedChord }
+        selectedChord() { return this.$store.state.selectedChord },
+        modes: {
+            get() { return this.$store.state.modes },
+            set(value) { this.$store.dispatch('setModes', value) }
+        }
     },
     methods: {
         emitKeySelectedEvent(key) {
@@ -86,6 +92,10 @@ export default {
     .selected-key {
         font-size: 24px;
     }    
+
+    .margin-after {
+        margin-bottom: 5px;
+    }
 
 </style>
 

@@ -16,7 +16,8 @@ export default new Vuex.Store({
     demoChordMode: false,
     selectedKey: void(0),
     selectedChord: void(0),
-    demoKey: void(0)
+    demoKey: void(0),
+    modes: ['Ionian', 'Aeolian']
   },
   mutations: {
     changePressedKeys(state, payload) {
@@ -48,6 +49,9 @@ export default new Vuex.Store({
     reset(state) {
       state.selectedChord = void(0);
       state.selectedKey = void(0);
+    },
+    setModes(state, payload) {
+      state.modes = payload;
     }
   },
   actions: {
@@ -73,6 +77,9 @@ export default new Vuex.Store({
       },
       reset(context) {
         context.commit('reset');
+      },
+      setModes({commit}, payload) {
+        commit('setModes', payload);
       }
   },
   getters: {
@@ -80,10 +87,11 @@ export default new Vuex.Store({
       return chordService.getChords(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedKey);
     },
     keys(state) {
-      return keyService.getKeys(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedChord);
+      return keyService.getKeys(state.notes.filter(x => !!x.down).map(x => x.index), state.selectedChord)
+        .filter(x => _.some(state.modes, mode => mode == x.modeName));
     },
-    allKeys() {
-      return keyService.keys;
+    allKeys(state) {
+      return keyService.keys.filter(x => _.some(state.modes, mode => mode == x.modeName));
     }
   }
 })

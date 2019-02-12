@@ -1,34 +1,18 @@
 import {range, intersection} from 'lodash'
-import Key from '@/models/Key';
-
-const makeSeq = steps => {
-    return steps.map((v, i) => {
-        let r = 0;
-        for (let j = 0; j <= i; ++j)
-            r += steps[j];
-        return r;
-    });
-};
-
-const major = makeSeq([0, 2, 2, 1, 2, 2, 2, 1]);
-const minor = makeSeq([0, 2, 1, 2, 2, 1, 2, 2]);
+import Key from '@/models/Key'
+import modes from '@/models/modes'
 
 const makeKey = p => {
-    const seq = p.type == 'major' ? major : minor;
-    return new Key(p.root, p.type, seq.map(v => (p.root + v) % 12));
+    return new Key(p.root, p.mode);
 };
 
 export default class KeyService {
     constructor() {
-        this.keys = 
-            range(12).map(root => makeKey({
-                root,
-                type: 'major'
-            }))
-            .concat(range(12).map(root => makeKey({
-                root,
-                type: 'minor'
-            })));
+        const keys = modes.map(mode => range(12).map(root => makeKey({
+            root,
+            mode
+        })));
+        this.keys = _.flatten(keys);
     } 
     
     getKeys(notes, selectedChord) {
